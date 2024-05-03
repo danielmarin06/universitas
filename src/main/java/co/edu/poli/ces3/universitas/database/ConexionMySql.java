@@ -16,6 +16,7 @@ public class ConexionMySql {
     ConexionMySql(String host){
         user = "root";
         password = "";
+        this.port = 3306;
         this.host= host != null ? host : "127.0.0.1";
         this.dataBaseName = "ces3-universitas";
     }
@@ -26,9 +27,11 @@ public class ConexionMySql {
     public Connection conexion(){
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            return DriverManager.getConnection( "jdbc:mysql://" +host+":"+port+"/"+ dataBaseName, user, password)
+            Connection cnn = DriverManager.getConnection( "jdbc:mysql://" +host+":"+port+"/"+ dataBaseName, user, password);
+            return cnn;
         }catch (ClassNotFoundException | SQLException exception){
             System.out.println(exception.getMessage());
+            exception.printStackTrace();
         }
         return null;
     }
@@ -38,8 +41,8 @@ public class ConexionMySql {
     }
     public static void main(String[] args) {
 
-        ConexionMySql con = new ConexionMySql();
-
+        ConexionMySql con = new ConexionMySql("localhost");
+        Connection conection = con.conexion();
         System.out.println("la suma es " + ConexionMySql.sum(3,4));
         System.out.println(ConexionMySql.SERIAL);
         System.out.println("Hello Conection MySQL");
