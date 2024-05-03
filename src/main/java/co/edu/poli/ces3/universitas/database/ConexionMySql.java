@@ -1,8 +1,10 @@
 package co.edu.poli.ces3.universitas.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import co.edu.poli.ces3.universitas.database.dao.User;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConexionMySql {
 
@@ -36,7 +38,18 @@ public class ConexionMySql {
         return null;
     }
 
-    public
+    public List<User> getUsers() throws SQLException {
+        Connection con = this.conexion();
+        Statement sts = con.createStatement();
+        ResultSet rs = sts.executeQuery("SELECT * FROM users");
+        List<User> list = new ArrayList<>();
+
+        while (rs.next()){
+            list.add(new User(rs.getString("name"), rs.getString("lastName")));
+        }
+
+        return list;
+    }
 
     public static int sum(int a, int b){
         return a + b;
@@ -45,6 +58,17 @@ public class ConexionMySql {
 
         ConexionMySql con = new ConexionMySql("localhost");
         Connection conection = con.conexion();
+
+        try {
+            for (User x:
+                 con.getUsers()) {
+                System.out.println("nombre: " + x.getName());
+                System.out.println("apellido: " + x.getLastname());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
         System.out.println("la suma es " + ConexionMySql.sum(3,4));
         System.out.println(ConexionMySql.SERIAL);
         System.out.println("Hello Conection MySQL");
