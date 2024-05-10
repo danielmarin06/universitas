@@ -15,6 +15,7 @@ public class ConexionMySql {
     private String dataBaseName;
     public static final long SERIAL = 1L;
 
+    private Connection cnn;
     public ConexionMySql(String host){
         user = "root";
         password = "";
@@ -24,12 +25,14 @@ public class ConexionMySql {
     }
 
 
-    public void disconect(){
+    public void disconect() throws SQLException {
+        if(cnn != null)
+            cnn.close();
     }
     public Connection conexion(){
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection cnn = DriverManager.getConnection( "jdbc:mysql://" +host+":"+port+"/"+ dataBaseName, user, password);
+            cnn = DriverManager.getConnection( "jdbc:mysql://" +host+":"+port+"/"+ dataBaseName, user, password);
             return cnn;
         }catch (ClassNotFoundException | SQLException exception){
             System.out.println(exception.getMessage());

@@ -3,6 +3,9 @@ package co.edu.poli.ces3.universitas.servlets;
 
 import co.edu.poli.ces3.universitas.database.dao.User;
 import co.edu.poli.ces3.universitas.database.repositories.UserRepository;
+import com.google.gson.GsonBuilder;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,43 +17,42 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 
 @WebServlet(name = "userServlet", value = "/api/user")
-public class UserServlet extends HttpServlet {
+public class UserServlet extends MyServlet {
+
+    private GsonBuilder gsonBuilder;
+    private Gson gson;
 
     public void init(){
-        System.out.println("Ingreso al init");
+        gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.create();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html");
+        resp.setContentType("application/json");
         PrintWriter out = resp.getWriter();
-
-        out.print("<h1>Users</h1><br/>");
-
         UserRepository repo = new UserRepository();
-
-        out.print("<table border=1>");
-        out.print("<thead>" +
-                "<tr>" +
-                "<th>Nombre</th>" +
-                "<th>Apellido</th>" +
-                "</tr>" +
-                "</thead>");
-        out.print("<tbody>");
         try {
-            for (User x: repo.get()) {
-                out.print("<tr>" +
-                        "<td>"+x.getName()+"</td>" +
-                        "<td>"+x.getLastname()+"</td>" +
-                        "</tr>");
-            }
+            out.print(gson.toJson(repo.get()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        out.print("</tbody>");
+        out.flush();
+    }
 
-        out.print("</table>");
-
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json");
+        PrintWriter out = resp.getWriter();
+        int id = Integer.parseInt(req.getParameter("id"));
+        JsonObject userUpdate = this.getParamsFromPost(req);
+        UserRepository repo = new UserRepository();
+        try {
+            User user = repo.update(userUpdate, id);
+            out.println(gson.toJson(user));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         out.flush();
     }
