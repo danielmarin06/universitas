@@ -45,7 +45,7 @@ public class UserServlet extends MyServlet {
         resp.setContentType("application/json");
         PrintWriter out = resp.getWriter();
         int id = Integer.parseInt(req.getParameter("id"));
-        JsonObject userUpdate = this.getParamsFromPost(req);
+        JsonObject userUpdate = this.getParamsFromBody(req);
         UserRepository repo = new UserRepository();
         try {
             User user = repo.update(userUpdate, id);
@@ -54,6 +54,22 @@ public class UserServlet extends MyServlet {
             throw new RuntimeException(e);
         }
 
+        out.flush();
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json");
+        PrintWriter out = resp.getWriter();
+        out.println("{\"message\": \"Hola!!!!\"}");
+        out.flush();
+    }
+
+    @Override
+    protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType("application/json");
+        PrintWriter out = resp.getWriter();
+        out.println("{\"message\": \"Hola desde patch!!!!\"}");
         out.flush();
     }
 }

@@ -73,7 +73,8 @@ public class UserRepository implements CRUD {
 
     @Override
     public User update(JsonObject userUpdate, int id) throws SQLException {
-        String sql = "UPDATE users SET name = ?, lastName = ?, mail = ?, password = ?, updatedAt = now() WHERE id = ?";
+        String sql = "UPDATE users SET name = ?, lastName = ?, mail = ?, password = ?, updatedAt = now() " +
+                    "WHERE id = ?";
         Connection cnn = this.cnnMysql.conexion();
         PreparedStatement sts = cnn.prepareStatement(sql);
         sts.setString(1, userUpdate.get("name").getAsString());
