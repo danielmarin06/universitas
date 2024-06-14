@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserRepository implements CRUD {
+public class UserRepository implements CRUD<User> {
 
     private ConexionMySql cnnMysql;
 

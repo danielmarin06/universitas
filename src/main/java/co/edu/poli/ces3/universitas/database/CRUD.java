@@ -6,13 +6,13 @@ import com.google.gson.JsonObject;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface CRUD {
+public interface CRUD<E> {
 
-    public List<User> get() throws SQLException;
+    public List<E> get() throws SQLException;
 
-    public User getOne(int id) throws SQLException;
+    public E getOne(int id) throws SQLException;
 
-    public User insert();
+    public E insert();
 
-    public User update(JsonObject userUpdate, int id) throws SQLException;
+    public E update(JsonObject userUpdate, int id) throws SQLException;
 }
