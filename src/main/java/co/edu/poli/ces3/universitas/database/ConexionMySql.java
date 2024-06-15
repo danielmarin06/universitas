@@ -18,10 +18,10 @@ public class ConexionMySql {
     private Connection cnn;
     public ConexionMySql(String host){
         user = "root";
-        password = "";
+        password = "Sistemas";
         this.port = 3306;
         this.host= host != null ? host : "127.0.0.1";
-        this.dataBaseName = "ces3-universitas";
+        this.dataBaseName = "universitas";
     }
 
 

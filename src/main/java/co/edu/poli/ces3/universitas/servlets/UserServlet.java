@@ -17,7 +17,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 
 @WebServlet(name = "userServlet", value = "/api/user")
-public class UserServlet extends MyServlet {
+public class UserServlet extends HttpServlet{
 
     private GsonBuilder gsonBuilder;
     private Gson gson;
@@ -25,6 +25,16 @@ public class UserServlet extends MyServlet {
     public void init(){
         gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.create();
+    }
+
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String method = req.getMethod();
+        if (!method.equals("PATCH")) {
+            super.service(req, resp);
+        }
+
+        this.doPatch(req, resp);
     }
 
     @Override
@@ -40,6 +50,7 @@ public class UserServlet extends MyServlet {
         out.flush();
     }
 
+/*
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
@@ -56,6 +67,7 @@ public class UserServlet extends MyServlet {
 
         out.flush();
     }
+*/
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -65,7 +77,6 @@ public class UserServlet extends MyServlet {
         out.flush();
     }
 
-    @Override
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
         PrintWriter out = resp.getWriter();

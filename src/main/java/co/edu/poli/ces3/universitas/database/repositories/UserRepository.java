@@ -23,7 +23,7 @@ public class UserRepository implements CRUD<User> {
     public List<User> get() throws SQLException {
         Connection con = cnnMysql.conexion();
         Statement sts = con.createStatement();
-        ResultSet rs = sts.executeQuery("SELECT * FROM users");
+        ResultSet rs = sts.executeQuery("SELECT * FROM user");
         List<User> list = new ArrayList<>();
 
         while (rs.next()){
